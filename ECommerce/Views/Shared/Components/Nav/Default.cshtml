@@ -1,0 +1,8 @@
+﻿@model IEnumerable<string>
+
+<h3>Categories</h3>
+<Hr />
+@foreach(string category in Model)
+    {
+        <p> <a class="navvc btn btn-block btn-outline-primary"asp-action="ProductDirectory" asp-controller="Product" asp-route-category="@category" asp-route-pagenum="1">@category</a></p>
+    }
