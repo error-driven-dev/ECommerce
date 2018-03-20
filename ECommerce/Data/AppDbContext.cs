@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using ECommerce.Models;
+using ECommerce.Models.ViewModels;
 
 namespace ECommerce.Models
 {
@@ -16,6 +17,6 @@ namespace ECommerce.Models
 
         public DbSet<Product> Products { get; set; }
 
-        public DbSet<ShippingAddress> ShippingAddresses { get; set; }
+        public DbSet<Address> Addresses { get; set; }
     }
 }

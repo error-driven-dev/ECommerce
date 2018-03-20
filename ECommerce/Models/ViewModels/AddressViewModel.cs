@@ -1,0 +1,45 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ECommerce.Models.ViewModels
+{
+    public class AddressViewModel
+    {
+        [MinLength(2, ErrorMessage = "Must be at least 2 characters.")]
+        [MaxLength(55, ErrorMessage = "Must not exceed 55 characters.")]
+        [Display(Name= "First Name:")]
+        [Required(ErrorMessage = "Required.")]
+        public string FirstName { get; set; }
+        [MinLength(2, ErrorMessage = "Must be at least 2 characters.")]
+        [MaxLength(55, ErrorMessage = "Must not exceed 55 characters.")]
+        [Display(Name = "Last Name:")]
+        [Required(ErrorMessage = "Required.")]
+        public string LastName { get; set; }
+        
+        [Required(ErrorMessage = "Required.")]
+        [UIHint("PhoneNumber")]
+       [Display(Name = "Phone:", Description = "numbers only.")]
+        public int Phone { get; set; }
+        [Required(ErrorMessage = "Required.")]
+        [EmailAddress(ErrorMessage = "Invalid email address.")]
+        [Display(Name = "Email Address:")]
+        public string Email { get; set; }
+        [Required (ErrorMessage = "Required.")]
+        [Display(Name="Address Line 1:")]
+        
+        public string AddressLine1 { get; set; }
+        [Display(Name="Address Line 2 (Apt, Suite, Floor, Unit):")]
+        public string AddressLine2 { get; set; }
+        [Required(ErrorMessage = "Required.")]
+        [Display(Name = "City:")]
+        public string City { get; set; }
+        [Required(ErrorMessage = "Required.")]
+        [Display(Name = "State:")]
+        public string State { get; set; }
+        
+        [Display(Name = "Zipcode:")]
+        [MinLength(5, ErrorMessage = "Zipcode must be at least 5 digits")]
+        [RegularExpression(@"^\d{5}([\-]?\d{4})?$")]
+        [Required(ErrorMessage = "Required.")]
+        public int Zipcode { get; set; }
+    }
+}
