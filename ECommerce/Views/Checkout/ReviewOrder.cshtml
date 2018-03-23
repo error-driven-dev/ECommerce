@@ -1,0 +1,18 @@
+﻿@using System.Collections
+@model ReviewOrderViewModel
+    
+<h3>Cart Content:</h3>
+@foreach (var p in Model.Cart.LineItems)
+{
+    <p>@p.Name</p>
+    <p>@p.Price</p>
+              
+}
+
+<h3>Ship To:</h3>
+<h6>@Model.ShipInfo.FirstName</h6>
+<p>@Model.ShipInfo.AddressLine1</p>
+<p>@Model.ShipInfo.AddressLine2</p>
+<p>@Model.ShipInfo.City, @Model.ShipInfo.State @Model.ShipInfo.Zipcode</p>
+<p>@Model.ShipInfo.Phone</p>
+<a type="button" >Edit</a>

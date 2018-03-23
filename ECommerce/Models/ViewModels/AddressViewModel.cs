@@ -7,39 +7,42 @@ namespace ECommerce.Models.ViewModels
         [MinLength(2, ErrorMessage = "Must be at least 2 characters.")]
         [MaxLength(55, ErrorMessage = "Must not exceed 55 characters.")]
         [Display(Name= "First Name:")]
-        [Required(ErrorMessage = "Required.")]
+        [Required(ErrorMessage = "Requiredf.")]
         public string FirstName { get; set; }
+
         [MinLength(2, ErrorMessage = "Must be at least 2 characters.")]
         [MaxLength(55, ErrorMessage = "Must not exceed 55 characters.")]
         [Display(Name = "Last Name:")]
-        [Required(ErrorMessage = "Required.")]
+        [Required(ErrorMessage = "Requiredl.")]
         public string LastName { get; set; }
         
-        [Required(ErrorMessage = "Required.")]
-        [UIHint("PhoneNumber")]
-       [Display(Name = "Phone:", Description = "numbers only.")]
-        public int Phone { get; set; }
-        [Required(ErrorMessage = "Required.")]
-        [EmailAddress(ErrorMessage = "Invalid email address.")]
-        [Display(Name = "Email Address:")]
-        public string Email { get; set; }
-        [Required (ErrorMessage = "Required.")]
-        [Display(Name="Address Line 1:")]
+        [Required(ErrorMessage = "Requiredp.")]
+
+        [Display(Name = "Phone:")]
+        public long Phone { get; set; }
+
         
+        
+
+
+        [Required (ErrorMessage = "Required1.")]
+        [Display(Name="Address Line 1:")]
         public string AddressLine1 { get; set; }
+
         [Display(Name="Address Line 2 (Apt, Suite, Floor, Unit):")]
         public string AddressLine2 { get; set; }
-        [Required(ErrorMessage = "Required.")]
+
+        [Required(ErrorMessage = "Requiredc.")]
         [Display(Name = "City:")]
         public string City { get; set; }
-        [Required(ErrorMessage = "Required.")]
+
+        [Required(ErrorMessage = "Requireds.")]
         [Display(Name = "State:")]
         public string State { get; set; }
         
-        [Display(Name = "Zipcode:")]
-        [MinLength(5, ErrorMessage = "Zipcode must be at least 5 digits")]
-        [RegularExpression(@"^\d{5}([\-]?\d{4})?$")]
-        [Required(ErrorMessage = "Required.")]
+        [Display(Name = "5-digit Zipcode:")]
+        [RegularExpression(@"^\d{5}([\-]?\d{4})?$", ErrorMessage = "Invalid zipcode")]
+        [Required(ErrorMessage = "Requiredz.")]
         public int Zipcode { get; set; }
     }
 }
