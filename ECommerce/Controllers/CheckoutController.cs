@@ -7,6 +7,7 @@ using ECommerce.Models;
 using ECommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.Prerendering;
+using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 using Order = ECommerce.Models.Order;
 
@@ -16,12 +17,14 @@ namespace ECommerce.Controllers
 {
     public class CheckoutController : Controller
     {
+        private AppDbContext _context;
+
+        public CheckoutController(AppDbContext context)
+        {
+            _context = context;
+        }
 
 
-        //checkout --> render address form
-        //submit address form and save to db, get address Id
-        //retreive cart contents and shipping info --> build object. Render review page with payment form
-        //submit payment -- get authorization and save to order:confirmed with payment id
         [HttpGet]
         public IActionResult ShipInfo()
         {
@@ -71,12 +74,42 @@ namespace ECommerce.Controllers
             return View( new ReviewOrderViewModel(){Cart = cartContents, ShipInfo = shipInfo});
         }
 
-        [HttpPost]
+        
         public IActionResult SubmitOrder(Order order)
         {
-            //get all the collected pieces and save to DB
-            //clear cart 
-            return View();
+            var cartContents = HttpContext.Session.GetJson<Cart>("Cart");
+            var shipInfo = HttpContext.Session.GetJson<AddressViewModel>("ShipInfo");
+            var address = new Address()
+            {
+                FirstName = shipInfo.FirstName,
+                LastName = shipInfo.LastName,
+                AddressLine1 = shipInfo.AddressLine1,
+                AddressLine2 = shipInfo.AddressLine1,
+                City = shipInfo.City,
+                State = shipInfo.State,
+                Zipcode = shipInfo.Zipcode,
+                Phone = shipInfo.Phone
+            };
+            _context.Addresses.Add(address);
+            var items = new List<Product>();
+            items.AddRange(cartContents.LineItems);
+            var newOrder = new Order()
+            {
+                ShippingInfo = address,
+                OrderItems = items,
+            };
+            _context.AttachRange(newOrder.OrderItems);
+            _context.Orders.Add(newOrder);
+            _context.SaveChanges();
+            var orderId = newOrder.OrderId;
+            HttpContext.Session.Clear();
+            return View("OrderConfirmation");
+        }
+        //check if orders saved to DB
+        public IActionResult GetOrder()
+        {
+           var order= _context.Orders.Include(p => p.OrderItems).FirstOrDefault();
+            return View("Order", order);
         }
 
     }

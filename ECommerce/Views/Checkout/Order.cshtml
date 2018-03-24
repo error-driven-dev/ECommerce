@@ -1,0 +1,8 @@
+﻿@model Order
+
+@Model.OrderId
+@foreach (var p in Model.OrderItems)
+{
+    <p>@p.Name'</p>
+    <p>@p.Price</p>
+}
