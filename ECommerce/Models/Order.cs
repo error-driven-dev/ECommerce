@@ -13,6 +13,6 @@ namespace ECommerce.Models
         public int AddressId { get; set; }
         public Address ShippingInfo { get; set; }
         
-        public List<Product> OrderItems { get; set; } = new List<Product>();
+        public List<LineItem> OrderItems { get; set; } = new List<LineItem>();
     }
 }

@@ -24,10 +24,23 @@ namespace ECommerce.Controllers
 
         public IActionResult AddToCart(int prodId)
         {
-            var requestedProduct = _repository.Products.FirstOrDefault(p => p.ProductId == prodId);
             Cart cartContents = GetCart();
-            cartContents.LineItems.Add(requestedProduct);
+            var lineItem = cartContents.LineItems.FirstOrDefault(p => p.Item.ProductId == prodId);
+            if (lineItem == null)
+            {
+                var requestedProduct = _repository.Products.FirstOrDefault(p => p.ProductId == prodId);
+                cartContents.LineItems.Add(new LineItem
+                {
+                    Item = requestedProduct,
+                    Quantity = 1
+                });
+            }
+            else
+            {
+                lineItem.Quantity++;
+            }
             SaveCart(cartContents);
+            
             return RedirectToAction("ViewCart");
         }
 
@@ -42,8 +55,15 @@ namespace ECommerce.Controllers
         {
 
             Cart cartContents = GetCart();
-            Product unwantedItem = cartContents.LineItems.FirstOrDefault(p => p.ProductId == prodId);
-            cartContents.LineItems.Remove(unwantedItem);
+            LineItem unwantedItem = cartContents.LineItems.FirstOrDefault(p => p.Item.ProductId == prodId);
+            if (unwantedItem.Quantity > 1)
+            {
+                unwantedItem.Quantity--;}
+            else
+            {
+                cartContents.LineItems.Remove(unwantedItem);
+            }
+
             SaveCart(cartContents);
             return RedirectToAction("ViewCart");
 

@@ -28,7 +28,8 @@ namespace ECommerce.Controllers
         [HttpGet]
         public IActionResult ShipInfo()
         {
-            return View("NewAddress");
+            var shipInfo = HttpContext.Session.GetJson<AddressViewModel>("ShipInfo") ?? new AddressViewModel();
+            return View("NewAddress", shipInfo);
         }
 
         [HttpPost]
@@ -51,13 +52,14 @@ namespace ECommerce.Controllers
         [HttpGet]
         public IActionResult PaymentInfo()
         {
-            return View();
+            var payInfo = HttpContext.Session.GetJson<PaymentInfoViewModel>("PaymentInfo") ?? new PaymentInfoViewModel();
+            payInfo.CardNumber = "";
+            return View(payInfo);
         }
 
         [HttpPost]
         public IActionResult PaymentInfo(PaymentInfoViewModel payInfo)
-        {
-            
+        { 
             if (ModelState.IsValid)
             {
                 HttpContext.Session.SetJson("PaymentInfo", payInfo);
@@ -70,11 +72,18 @@ namespace ECommerce.Controllers
         public IActionResult ReviewOrder()
         {
             var cartContents = HttpContext.Session.GetJson<Cart>("Cart");
+            if (cartContents == null)
+            {
+                return RedirectToAction("ViewCart", "Cart");}
+
             var shipInfo = HttpContext.Session.GetJson<AddressViewModel>("ShipInfo");
+            if (shipInfo == null)
+            {
+                return RedirectToAction("ShipInfo");}
             return View( new ReviewOrderViewModel(){Cart = cartContents, ShipInfo = shipInfo});
         }
 
-        
+        [HttpPost]
         public IActionResult SubmitOrder(Order order)
         {
             var cartContents = HttpContext.Session.GetJson<Cart>("Cart");
@@ -87,11 +96,11 @@ namespace ECommerce.Controllers
                 AddressLine2 = shipInfo.AddressLine1,
                 City = shipInfo.City,
                 State = shipInfo.State,
-                Zipcode = shipInfo.Zipcode,
-                Phone = shipInfo.Phone
+                Zipcode = (int)shipInfo.Zipcode,
+                Phone = (long)shipInfo.Phone
             };
             _context.Addresses.Add(address);
-            var items = new List<Product>();
+            var items = new List<LineItem>();
             items.AddRange(cartContents.LineItems);
             var newOrder = new Order()
             {

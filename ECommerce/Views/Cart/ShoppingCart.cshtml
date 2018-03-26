@@ -3,26 +3,35 @@
 <h3>Your Shopping Cart</h3>
 <table class="table table-striped table-bordered">
     <thead>
-    <tr>
-        <th>Product</th>
-        <th>Description</th>
-        <th>Price</th>
-    </tr>
+        <tr>
+            <th>Product</th>
+            <th>Description</th>
+            <th>Qty</th>
+            <th>Price</th>
+        </tr>
     </thead>
-    @if(Model.LineItems.Count == 0) { <td colspan="3">Your Shopping Cart is Empty!</td>}
-        @foreach (var p in Model.LineItems)
+    @if (Model.LineItems.Count == 0)
+    {
+        <td colspan="3">Your Shopping Cart is Empty!</td>}
+    @foreach (var p in Model.LineItems)
     {
         <tr>
-            <td>@p.Name</td>
-            <td>@p.Description</td>
-            <td>@p.Price.ToString("C") <a class="btn" asp-action="RemoveItem" asp-route-prodid="@p.ProductId" asp-controller="Cart">Remove Item</a></td>
+            <td>@p.Item.Name</td>
+            <td>@p.Item.Description</td>
+            <td><a class="btn btn-sm" type="button" asp-action="AddToCart" asp-controller="Cart" asp-route-prodid="@p.Item.ProductId">+</a>@p.Quantity <a class="btn btn-sm" type="button" asp-action="RemoveItem" asp-controller="Cart" asp-route-prodid="@p.Item.ProductId">-</a></td>
+            <td>@((p.Item.Price*p.Quantity).Value.ToString("C"))<a class="btn" asp-action="RemoveItem" asp-route-prodid="@p.Item.ProductId" asp-controller="Cart">Remove Item</a></td>
 
         </tr>
-}
-        
-    
-</table> 
-<h3>Total: @Model.LineItems.Sum(p => p.Price).ToString("C") </h3>
+    }
+
+    <tr >
+        <td>
+            <h3>Total:</h3></td><td></td><td>@Model.LineItems.Sum(p => p.Quantity)</td>
+        <td>
+            <h3>@Model.LineItems.Sum(p => (p.Item.Price*p.Quantity)).Value.ToString("C") </h3></td>
+    </tr>
+    </table> 
+
 
 <a asp-action="ShipInfo" asp-controller="Checkout" class="btn">Checkout</a>
-<a asp-action="ProductDirectory" asp-controller="product">Continue Shopping</a>
+<a asp-route="@TempData["ReturnURL"]" >Continue Shopping</a>

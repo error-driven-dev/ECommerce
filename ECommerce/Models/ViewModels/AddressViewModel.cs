@@ -7,19 +7,19 @@ namespace ECommerce.Models.ViewModels
         [MinLength(2, ErrorMessage = "Must be at least 2 characters.")]
         [MaxLength(55, ErrorMessage = "Must not exceed 55 characters.")]
         [Display(Name= "First Name:")]
-        [Required(ErrorMessage = "Requiredf.")]
+        [Required(ErrorMessage = "Required")]
         public string FirstName { get; set; }
 
         [MinLength(2, ErrorMessage = "Must be at least 2 characters.")]
         [MaxLength(55, ErrorMessage = "Must not exceed 55 characters.")]
         [Display(Name = "Last Name:")]
-        [Required(ErrorMessage = "Requiredl.")]
+        [Required(ErrorMessage = "Required")]
         public string LastName { get; set; }
         
-        [Required(ErrorMessage = "Requiredp.")]
+        [Required(ErrorMessage = "Required")]
 
         [Display(Name = "Phone:")]
-        public long Phone { get; set; }
+        public long? Phone { get; set; }
 
         
         
@@ -43,6 +43,6 @@ namespace ECommerce.Models.ViewModels
         [Display(Name = "5-digit Zipcode:")]
         [RegularExpression(@"^\d{5}([\-]?\d{4})?$", ErrorMessage = "Invalid zipcode")]
         [Required(ErrorMessage = "Requiredz.")]
-        public int Zipcode { get; set; }
+        public int? Zipcode { get; set; }
     }
 }

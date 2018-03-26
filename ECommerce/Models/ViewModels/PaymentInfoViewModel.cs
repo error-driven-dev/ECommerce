@@ -18,10 +18,10 @@ namespace ECommerce.Models.ViewModels
         [Display(GroupName= "Expiration Date")]
         [Required(ErrorMessage = "Requiredm.")]
         [Range(1,13, ErrorMessage = "Must be 1-12")]
-        public int Month { get; set; }
+        public int? Month { get; set; }
 
         [Required(ErrorMessage = "Requiredy.")]
-        public int Year { get; set; }
+        public int? Year { get; set; }
 
         [Display(GroupName = "Billing Name and Address")]
         public AddressViewModel BillingAddress { get; set; }

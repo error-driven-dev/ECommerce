@@ -3,6 +3,6 @@
 @Model.OrderId
 @foreach (var p in Model.OrderItems)
 {
-    <p>@p.Name'</p>
-    <p>@p.Price</p>
+    <p>@p.Item.Name</p>
+    <p>@p.Item.Price</p>
 }
