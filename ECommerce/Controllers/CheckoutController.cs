@@ -84,7 +84,7 @@ namespace ECommerce.Controllers
         }
 
         [HttpPost]
-        public IActionResult SubmitOrder(Order order)
+        public IActionResult SubmitOrder()
         {
             var cartContents = HttpContext.Session.GetJson<Cart>("Cart");
             var shipInfo = HttpContext.Session.GetJson<AddressViewModel>("ShipInfo");

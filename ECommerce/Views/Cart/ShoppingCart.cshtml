@@ -1,4 +1,4 @@
-﻿@model Cart
+﻿@model ShoppingCartViewModel
 
 <h3>Your Shopping Cart</h3>
 <table class="table table-striped table-bordered">
@@ -10,28 +10,38 @@
             <th>Price</th>
         </tr>
     </thead>
-    @if (Model.LineItems.Count == 0)
+    @if (Model.Cart.LineItems.Count == 0)
     {
         <td colspan="3">Your Shopping Cart is Empty!</td>}
-    @foreach (var p in Model.LineItems)
+    @foreach (var p in Model.Cart.LineItems)
     {
         <tr>
             <td>@p.Item.Name</td>
             <td>@p.Item.Description</td>
-            <td><a class="btn btn-sm" type="button" asp-action="AddToCart" asp-controller="Cart" asp-route-prodid="@p.Item.ProductId">+</a>@p.Quantity <a class="btn btn-sm" type="button" asp-action="RemoveItem" asp-controller="Cart" asp-route-prodid="@p.Item.ProductId">-</a></td>
-            <td>@((p.Item.Price*p.Quantity).Value.ToString("C"))<a class="btn" asp-action="RemoveItem" asp-route-prodid="@p.Item.ProductId" asp-controller="Cart">Remove Item</a></td>
-
+            <td><span><form class="d-inline-block" asp-action="AddToCart" asp-controller="cart" method="post">
+                    <input type="hidden" name="prodId" value="@p.Item.ProductId" />
+                    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                    <input type="submit" class="btn" value=" + "/>
+                </form> @p.Quantity
+                <form class="d-inline-block" asp-action="RemoveItem" asp-controller="cart" method="post">
+                    <input type="hidden" name="prodId" value="@p.Item.ProductId" />
+                    <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+                    <input type="submit" class="btn" value=" - "/>
+                </form></span></td>
+            <td>@(p.Item.Price*p.Quantity)</td>
         </tr>
     }
 
-    <tr >
+    <tr class="subtotal bg-light" >
+        <td >
+            </td><td><h3 class="text-right">Subtotal:</h3></td><td><h3>@Model.Cart.LineItems.Sum(p => p.Quantity)</h3></td>
         <td>
-            <h3>Total:</h3></td><td></td><td>@Model.LineItems.Sum(p => p.Quantity)</td>
-        <td>
-            <h3>@Model.LineItems.Sum(p => (p.Item.Price*p.Quantity)).Value.ToString("C") </h3></td>
+            <h3>@Model.Cart.LineItems.Sum(p => (p.Item.Price*p.Quantity)).Value.ToString("C") </h3></td>
     </tr>
     </table> 
 
-
-<a asp-action="ShipInfo" asp-controller="Checkout" class="btn">Checkout</a>
-<a asp-route="@TempData["ReturnURL"]" >Continue Shopping</a>
+@if (Model.Cart.LineItems.Count > 0)
+{
+    <a type="button" asp-action="ShipInfo" asp-controller="Checkout" class="btn btn-primary">Checkout</a>
+}
+<a type="button" href="@(Model.ReturnUrl ?? "/")" class="btn btn-primary">Continue Shopping</a>

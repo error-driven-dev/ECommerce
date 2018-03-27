@@ -29,8 +29,9 @@ foreach(var p in Model.Cart.LineItems)
 <p>@Model.ShipInfo.City, @Model.ShipInfo.State @Model.ShipInfo.Zipcode</p>
 
 <p>@Model.ShipInfo.Phone.Value.ToString("###-###-####")</p>
-<form asp-action="SubmitOrder" asp-method="post">
-    <input type="button" class="btn btn-default">Complete Order />
+
+<form asp-action="SubmitOrder" asp-controller="Checkout" method="post">
+    <input type="submit" class="btn btn-primary" value="Complete Order"/>
 </form>
 
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ECommerce.Infrastructure;
 using ECommerce.Models;
+using ECommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -22,7 +23,8 @@ namespace ECommerce.Controllers
         }
 
 
-        public IActionResult AddToCart(int prodId)
+        [HttpPost]
+        public IActionResult AddToCart(int prodId, string returnUrl)
         {
             Cart cartContents = GetCart();
             var lineItem = cartContents.LineItems.FirstOrDefault(p => p.Item.ProductId == prodId);
@@ -41,17 +43,18 @@ namespace ECommerce.Controllers
             }
             SaveCart(cartContents);
             
-            return RedirectToAction("ViewCart");
+            return RedirectToAction("ViewCart", new{returnUrl});
         }
 
-        public IActionResult ViewCart()
+        public IActionResult ViewCart(string returnUrl)
         {
             var cartContents = GetCart();
-            
-            return View("ShoppingCart", cartContents);
+
+            return View("ShoppingCart", new ShoppingCartViewModel {Cart = cartContents, ReturnUrl = returnUrl});
         }
 
-        public IActionResult RemoveItem(int prodId)
+        [HttpPost]
+        public IActionResult RemoveItem(int prodId, string returnUrl)
         {
 
             Cart cartContents = GetCart();
@@ -65,30 +68,12 @@ namespace ECommerce.Controllers
             }
 
             SaveCart(cartContents);
-            return RedirectToAction("ViewCart");
+            return RedirectToAction("ViewCart", new{returnUrl});
 
 
         }
 
-   
-//        [HttpPost]
-//        public IActionResult Checkout1GetCustAddress(ShippingAddress shipping)
-//        {
-            //save shipping address to DB and get ID
-            
-            //get cart contents and start staging order object
-//            Cart cartContents = GetCart();
-//            var newOrder = new Order()
-//            {
-//                
-//                ShippingAddressId = shipaddressid,
-//                OrderItems = cartContents.LineItems
-//            };
-//            //add Oder object to  DB table
-//            //get order Id
-//
-//            //Show payment form
-//         }
+
 
         public Cart GetCart()
         {

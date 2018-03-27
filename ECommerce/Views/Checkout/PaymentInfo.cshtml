@@ -9,7 +9,7 @@
             <div class="form-group">
                 <label asp-for="PaymentMethod"></label>
                 <select class="form-control" asp-for="PaymentMethod" asp-items="@new SelectList(Enum.GetNames(typeof(PaymentMethods)))">
-                    <option disabled selected>Select Payment Method</option>
+                    <option selected disabled>Select Payment Method</option>
 
                 </select>
                 <span asp-validation-for="PaymentMethod" class="text-danger"></span>
