@@ -45,7 +45,7 @@ namespace ECommerce
             app.UseSession();
             app.UseMvc(routes =>
             {
-                routes.MapRoute(name: null, template: "{category}/Page{pageNum:int}",
+                routes.MapRoute(name: "default", template: "{category}/Page{pageNum:int}",
                     defaults: new {controller = "Product", action = "ProductDirectory"});
                 routes.MapRoute(name: null, template: "Page{pageNum:int}",
                     defaults: new {controller = "Product", action = "ProductDirectory", pageNum = 1});
